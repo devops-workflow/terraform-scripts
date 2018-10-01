@@ -9,6 +9,8 @@ profile=${1:-saml}
 [[ $(aws configure --profile ${profile} list 2>/dev/null) && $? -eq 0 ]] && \
   echo "Using AWS Profile: ${profile}" || \
   { echo "AWS Profile '${profile}' does not exist"; exit 1; }
+# if blank get default
+# region=$(aws configure get region --profile ${profile})
 
 ENV=$(AWS_PROFILE=${profile} aws iam list-account-aliases --output=text --query 'AccountAliases[0]' | sed "s/${org}-//")
 echo "AWS env: $ENV"
